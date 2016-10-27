@@ -1,0 +1,35 @@
+-> What can you use the plugin for?
+You can use this plugin if you want an insight into which line of code your JVM
+is executing at what time. You attach your IDE to an already running JVM (remote
+or local) over the debug port and set breakpoints in your IDE. As soon as JVM 
+executes a line of code where breakpoint was set in IDE, a line number and the 
+time that line was executed will be printed on IDEs execution console.
+
+-> Why not just use the existing "DEBUG" mode in IDEs
+"DEBUG" mode in popular IDEs lets you set breakpoints to pause execution and 
+see the state of your application. It does NOT let you execute custom code when
+breakpointed line is reached. You can use this plugin to attach a callback
+method which is called everytime a breakpoint is reached and execute whatever
+custom logic you want to upon reaching that breakpoint.
+
+-> How to use the plugin.
+This procedure describes how to use the plugin if your JVM is running on a
+remote machine and the IDE is open on you personal machine. (steps a, b, c)
+a. Create remote debugger configuration in your IDE (steps for IntelliJ)
+    * Run -> Edit Configurations
+    * Click the "+" in the upper left
+    * Select the "Remote" option in the left-most pane
+    * Choose a name for the "Remote" configuration
+    * Select "Attach" as the "Debugger mode"
+    * Set Host to localhost
+    * Set port to the debug port specified in the cluster config for the storage node
+      you want to debug. Lets say 50006
+    * Click "OK" to save.
+b. Set up port forwarding (if virtual cluster and IDE are running on different
+machines) If the storage node being debugged has a debug port 50006, you can 
+setup port forwarding by running this command on the machine your IntelliJ is 
+running on.
+    * ssh -L 50006:localhost:50006 username@host-your-vc-is-running-on
+c. In your IntelliJ. Goto Run -> Run Code Profiler... and select the
+configuration you created in step (a)
+Note!!!: Make sure to start you JVM with the agentlib debug flag
